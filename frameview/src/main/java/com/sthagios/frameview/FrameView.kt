@@ -21,12 +21,10 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
 
 
     init {
-        mPaintLine.color = Color.WHITE
         mPaintLine.style = Paint.Style.STROKE
 
         mPaintRectangle.style = Paint.Style.FILL
         mPaintRectangle.color = Color.BLACK
-        mPaintRectangle.alpha = 1000
 
         val typedArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.FrameView, defStyleAttr, defStyleRes)
 
@@ -38,6 +36,10 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
             val lineWidth = typedArray?.getLayoutDimension(R.styleable.FrameView_line_width, dpToPx(2).toInt())
             if (lineWidth != null) {
                 mPaintLine.strokeWidth = lineWidth.toFloat()
+            }
+            val lineColor = typedArray?.getColor(R.styleable.FrameView_line_color, Color.WHITE)
+            if (lineColor != null) {
+                mPaintLine.color = lineColor
             }
             val frameSize = typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
             if (frameSize != null) {
@@ -70,6 +72,12 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
 
     fun setLineLength(dp: Int) {
         mLineLength = dpToPx(dp)
+        requestLayout()
+        invalidate()
+    }
+
+    fun setLineColor(color: Int) {
+        mPaintLine.color = color
         requestLayout()
         invalidate()
     }
