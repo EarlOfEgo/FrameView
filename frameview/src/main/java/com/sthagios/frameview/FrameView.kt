@@ -8,8 +8,6 @@ import android.util.AttributeSet
 import android.view.View
 
 
-
-
 class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var mHeight: Float = 0f
@@ -70,30 +68,45 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
     }
 
+    /**
+     * Sets the line length.
+     */
     fun setLineLength(dp: Int) {
         mLineLength = dpToPx(dp)
         requestLayout()
         invalidate()
     }
 
+    /**
+     * Sets the line color, should be a color int.
+     */
     fun setLineColor(color: Int) {
         mPaintLine.color = color
         requestLayout()
         invalidate()
     }
 
+    /**
+     * Sets the size of the frame.
+     */
     fun setFrameSize(dp: Int) {
         mFrameSize = dpToPx(dp)
         requestLayout()
         invalidate()
     }
 
+    /**
+     * Sets the frame color, should be between 0..255
+     */
     fun setFrameAlpha(alpha: Int) {
         mPaintRectangle.alpha = alpha
         requestLayout()
         invalidate()
     }
 
+    /**
+     * Sets the line length.
+     */
     fun setLineWidth(dp: Int) {
         mPaintLine.strokeWidth = dpToPx(dp)
         requestLayout()
