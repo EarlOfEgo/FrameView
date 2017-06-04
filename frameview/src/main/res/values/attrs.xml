@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FrameView">
+        <attr name="line_length" format="dimension"/>
+        <attr name="frame_size" format="dimension"/>
+    </declare-styleable>
+</resources>

@@ -10,7 +10,7 @@ import android.view.View
 
 
 
-class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var mHeight: Float = 0f
     private var mLineLength: Float = 0f
@@ -27,9 +27,24 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
         mPaintRectangle.color = Color.BLACK
         mPaintRectangle.alpha = 100
 
+
+        val typedArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.FrameView, defStyleAttr, defStyleRes)
+
+        try {
+            val lineLength = typedArray?.getLayoutDimension(R.styleable.FrameView_line_length, dpToPx(16).toInt())
+            if (lineLength != null) {
+                mLineLength = lineLength.toFloat()
+            }
+            val frameSize = typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
+            if (frameSize != null) {
+                mFrameSize = frameSize.toFloat()
+            }
+        } finally {
+            typedArray?.recycle()
+        }
+
+
         setLineWidth(1)
-        setLineLength(16)
-        setFrameSize(28)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -50,11 +65,13 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
     fun setLineLength(dp: Int) {
         mLineLength = dpToPx(dp)
         requestLayout()
+        invalidate()
     }
 
     fun setFrameSize(dp: Int) {
         mFrameSize = dpToPx(dp)
         requestLayout()
+        invalidate()
     }
 
     private fun dpToPx(dp: Int): Float {
