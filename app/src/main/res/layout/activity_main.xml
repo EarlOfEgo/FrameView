@@ -26,7 +26,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:line_length="16dp" />
+        app:line_length="16dp"
+        app:line_width="4dp"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"

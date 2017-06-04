@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="FrameView">
         <attr name="line_length" format="dimension"/>
+        <attr name="line_width" format="dimension"/>
         <attr name="frame_size" format="dimension"/>
     </declare-styleable>
 </resources>
