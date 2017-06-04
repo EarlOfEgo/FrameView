@@ -4,5 +4,6 @@
         <attr name="line_length" format="dimension"/>
         <attr name="line_width" format="dimension"/>
         <attr name="frame_size" format="dimension"/>
+        <attr name="frame_alpha" format="integer" />
     </declare-styleable>
 </resources>

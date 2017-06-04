@@ -26,7 +26,7 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
 
         mPaintRectangle.style = Paint.Style.FILL
         mPaintRectangle.color = Color.BLACK
-        mPaintRectangle.alpha = 100
+        mPaintRectangle.alpha = 1000
 
         val typedArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.FrameView, defStyleAttr, defStyleRes)
 
@@ -42,6 +42,10 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
             val frameSize = typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
             if (frameSize != null) {
                 mFrameSize = frameSize.toFloat()
+            }
+            val frameAlpha = typedArray?.getInt(R.styleable.FrameView_frame_alpha, 125)
+            if (frameAlpha != null) {
+                mPaintRectangle.alpha = frameAlpha
             }
         } finally {
             typedArray?.recycle()
@@ -72,6 +76,12 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
 
     fun setFrameSize(dp: Int) {
         mFrameSize = dpToPx(dp)
+        requestLayout()
+        invalidate()
+    }
+
+    fun setFrameAlpha(alpha: Int) {
+        mPaintRectangle.alpha = alpha
         requestLayout()
         invalidate()
     }
