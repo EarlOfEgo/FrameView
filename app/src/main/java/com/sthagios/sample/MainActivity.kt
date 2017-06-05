@@ -14,7 +14,9 @@ class MainActivity : AppCompatActivity() {
 
         val frameView = findViewById(R.id.frameView) as FrameView
         val lineLength = findViewById(R.id.lineLength) as SeekBar
+        lineLength.progress = frameView.lineLength
         val frameSize = findViewById(R.id.frameSize) as SeekBar
+        frameSize.progress = frameView.frameSize
         lineLength.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
 
@@ -24,14 +26,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                frameView.setLineLength(progress)
+                frameView.lineLength = progress
             }
 
         })
 
         frameSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                frameView.setFrameSize(progress)
+                frameView.frameSize = progress
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {

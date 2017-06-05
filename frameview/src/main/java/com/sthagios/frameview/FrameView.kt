@@ -8,15 +8,70 @@ import android.util.AttributeSet
 import android.view.View
 
 
-class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : View(context, attrs, defStyleAttr) {
+class FrameView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0) : View(context, attrs, defStyleAttr) {
 
     private var mHeight: Float = 0f
     private var mLineLength: Float = 0f
     private val mPaintLine: Paint = Paint()
     private val mPaintRectangle: Paint = Paint()
-    private var mFrameSize: Float = 0f
+    private var mFrameSizePx: Float = 0f
     private var mWidth: Float = 0f
 
+    /**
+     * Sets the frame size in dp
+     */
+    var frameSize: Int = 0
+        set(value) {
+            field = value
+            mFrameSizePx = dpToPx(value)
+            requestLayout()
+            invalidate()
+        }
+
+    /**
+     * Sets the line length.
+     */
+    var lineWidth: Int = 0
+        set(value) {
+            field = value
+            mPaintLine.strokeWidth = dpToPx(value)
+            requestLayout()
+            invalidate()
+        }
+
+    /**
+     * Sets the line color, should be a color int.
+     */
+    var lineColor: Int = 0
+        set(value) {
+            field = value
+            mPaintLine.color = value
+            requestLayout()
+            invalidate()
+        }
+
+    /**
+     * Sets the line length.
+     */
+    var lineLength: Int = 0
+        set(value) {
+            field = value
+            mLineLength = dpToPx(value)
+            requestLayout()
+            invalidate()
+        }
+
+
+    /**
+     * Sets the frame color, should be between 0..255
+     */
+    var frameAlpha: Int = 0
+        set(value) {
+            field = value
+            mPaintRectangle.alpha = value
+            requestLayout()
+            invalidate()
+        }
 
     init {
         mPaintLine.style = Paint.Style.STROKE
@@ -27,25 +82,25 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
         val typedArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.FrameView, defStyleAttr, defStyleRes)
 
         try {
-            val lineLength = typedArray?.getLayoutDimension(R.styleable.FrameView_line_length, dpToPx(16).toInt())
-            if (lineLength != null) {
-                mLineLength = lineLength.toFloat()
+            val lineLengthFromTypedArray = typedArray?.getLayoutDimension(R.styleable.FrameView_line_length, dpToPx(16).toInt())
+            if (lineLengthFromTypedArray != null) {
+                lineLength = (lineLengthFromTypedArray / context.resources.displayMetrics.density).toInt()
             }
-            val lineWidth = typedArray?.getLayoutDimension(R.styleable.FrameView_line_width, dpToPx(2).toInt())
-            if (lineWidth != null) {
-                mPaintLine.strokeWidth = lineWidth.toFloat()
+            val lineWidthFromTypedArray = typedArray?.getLayoutDimension(R.styleable.FrameView_line_width, dpToPx(2).toInt())
+            if (lineWidthFromTypedArray != null) {
+                lineWidth = (lineWidthFromTypedArray / context.resources.displayMetrics.density).toInt()
             }
-            val lineColor = typedArray?.getColor(R.styleable.FrameView_line_color, Color.WHITE)
-            if (lineColor != null) {
-                mPaintLine.color = lineColor
+            val lineColorFromTypedArray = typedArray?.getColor(R.styleable.FrameView_line_color, Color.WHITE)
+            if (lineColorFromTypedArray != null) {
+                lineColor = lineColorFromTypedArray
             }
-            val frameSize = typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
-            if (frameSize != null) {
-                mFrameSize = frameSize.toFloat()
+            val frameSizeFromTypedArray = typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
+            if (frameSizeFromTypedArray != null) {
+                frameSize = (frameSizeFromTypedArray / context.resources.displayMetrics.density).toInt()
             }
-            val frameAlpha = typedArray?.getInt(R.styleable.FrameView_frame_alpha, 125)
-            if (frameAlpha != null) {
-                mPaintRectangle.alpha = frameAlpha
+            val frameAlphaFromTypedArray = typedArray?.getInt(R.styleable.FrameView_frame_alpha, 125)
+            if (frameAlphaFromTypedArray != null) {
+                frameAlpha = frameAlphaFromTypedArray
             }
         } finally {
             typedArray?.recycle()
@@ -68,80 +123,35 @@ class FrameView @JvmOverloads constructor (context: Context?, attrs: AttributeSe
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec)
     }
 
-    /**
-     * Sets the line length.
-     */
-    fun setLineLength(dp: Int) {
-        mLineLength = dpToPx(dp)
-        requestLayout()
-        invalidate()
-    }
-
-    /**
-     * Sets the line color, should be a color int.
-     */
-    fun setLineColor(color: Int) {
-        mPaintLine.color = color
-        requestLayout()
-        invalidate()
-    }
-
-    /**
-     * Sets the size of the frame.
-     */
-    fun setFrameSize(dp: Int) {
-        mFrameSize = dpToPx(dp)
-        requestLayout()
-        invalidate()
-    }
-
-    /**
-     * Sets the frame color, should be between 0..255
-     */
-    fun setFrameAlpha(alpha: Int) {
-        mPaintRectangle.alpha = alpha
-        requestLayout()
-        invalidate()
-    }
-
-    /**
-     * Sets the line length.
-     */
-    fun setLineWidth(dp: Int) {
-        mPaintLine.strokeWidth = dpToPx(dp)
-        requestLayout()
-        invalidate()
-    }
-
     private fun dpToPx(dp: Int): Float {
         val scale = context.resources.displayMetrics.density
         return (dp * scale + 0.5f)
     }
 
     private fun drawLowerLeftLines(canvas: Canvas) {
-        canvas.drawLine(mFrameSize, mHeight - mLineLength - mFrameSize, mFrameSize, mHeight - mFrameSize, mPaintLine)
-        canvas.drawLine(mFrameSize - mPaintLine.strokeWidth/2, mHeight - mFrameSize, mFrameSize + mLineLength, mHeight - mFrameSize, mPaintLine)
+        canvas.drawLine(mFrameSizePx, mHeight - mLineLength - mFrameSizePx, mFrameSizePx, mHeight - mFrameSizePx, mPaintLine)
+        canvas.drawLine(mFrameSizePx - mPaintLine.strokeWidth / 2, mHeight - mFrameSizePx, mFrameSizePx + mLineLength, mHeight - mFrameSizePx, mPaintLine)
     }
 
     private fun drawLowerRightLines(canvas: Canvas) {
-        canvas.drawLine(mWidth - mFrameSize, mHeight - mLineLength - mFrameSize, mWidth - mFrameSize, mHeight - mFrameSize, mPaintLine)
-        canvas.drawLine(mWidth - mLineLength - mFrameSize, mHeight - mFrameSize, mWidth - mFrameSize  + mPaintLine.strokeWidth/2, mHeight - mFrameSize, mPaintLine)
+        canvas.drawLine(mWidth - mFrameSizePx, mHeight - mLineLength - mFrameSizePx, mWidth - mFrameSizePx, mHeight - mFrameSizePx, mPaintLine)
+        canvas.drawLine(mWidth - mLineLength - mFrameSizePx, mHeight - mFrameSizePx, mWidth - mFrameSizePx + mPaintLine.strokeWidth / 2, mHeight - mFrameSizePx, mPaintLine)
     }
 
     private fun drawShadowRectangles(canvas: Canvas) {
-        canvas.drawRect(0f, 0f, mFrameSize, mHeight, mPaintRectangle)
-        canvas.drawRect(mWidth - mFrameSize, 0f, mWidth, mHeight, mPaintRectangle)
-        canvas.drawRect(mFrameSize, 0f, mWidth - mFrameSize, mFrameSize, mPaintRectangle)
-        canvas.drawRect(mFrameSize, mHeight - mFrameSize, mWidth - mFrameSize, mHeight, mPaintRectangle)
+        canvas.drawRect(0f, 0f, mFrameSizePx, mHeight, mPaintRectangle)
+        canvas.drawRect(mWidth - mFrameSizePx, 0f, mWidth, mHeight, mPaintRectangle)
+        canvas.drawRect(mFrameSizePx, 0f, mWidth - mFrameSizePx, mFrameSizePx, mPaintRectangle)
+        canvas.drawRect(mFrameSizePx, mHeight - mFrameSizePx, mWidth - mFrameSizePx, mHeight, mPaintRectangle)
     }
 
     private fun drawUpperLeftLines(canvas: Canvas) {
-        canvas.drawLine(mFrameSize, mFrameSize, mFrameSize, mFrameSize + mLineLength, mPaintLine)
-        canvas.drawLine(mFrameSize - mPaintLine.strokeWidth/2, mFrameSize, mFrameSize + mLineLength, mFrameSize, mPaintLine)
+        canvas.drawLine(mFrameSizePx, mFrameSizePx, mFrameSizePx, mFrameSizePx + mLineLength, mPaintLine)
+        canvas.drawLine(mFrameSizePx - mPaintLine.strokeWidth / 2, mFrameSizePx, mFrameSizePx + mLineLength, mFrameSizePx, mPaintLine)
     }
 
     private fun drawUpperRightLines(canvas: Canvas) {
-        canvas.drawLine(mWidth - mFrameSize, mFrameSize, mWidth - mFrameSize, mFrameSize + mLineLength, mPaintLine)
-        canvas.drawLine(mWidth - mLineLength - mFrameSize, mFrameSize, mWidth - mFrameSize  + mPaintLine.strokeWidth/2, mFrameSize, mPaintLine)
+        canvas.drawLine(mWidth - mFrameSizePx, mFrameSizePx, mWidth - mFrameSizePx, mFrameSizePx + mLineLength, mPaintLine)
+        canvas.drawLine(mWidth - mLineLength - mFrameSizePx, mFrameSizePx, mWidth - mFrameSizePx + mPaintLine.strokeWidth / 2, mFrameSizePx, mPaintLine)
     }
 }
