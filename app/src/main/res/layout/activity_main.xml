@@ -41,14 +41,17 @@
         <SeekBar
             android:id="@+id/lineLength"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progress="10" />
+            android:layout_height="wrap_content" />
 
         <SeekBar
             android:id="@+id/frameSize"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progress="10" />
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/frameAlpha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
