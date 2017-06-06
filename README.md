@@ -1,5 +1,5 @@
 # FrameView
-[ ![Download](https://api.bintray.com/packages/sthagios/maven/FrameView/images/download.svg) ](https://bintray.com/sthagios/maven/FrameView/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/sthagios/maven/frameview/images/download.svg) ](https://bintray.com/sthagios/maven/frameview/_latestVersion)
 
 Custom view written in Kotlin to Display a translucent frame with corners as known from cameras. You can set the frame's alpha, the frame size, the length of the lines in the corner, their color and the width of them.
 
