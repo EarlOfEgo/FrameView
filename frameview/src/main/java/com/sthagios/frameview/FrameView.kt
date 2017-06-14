@@ -82,26 +82,16 @@ class FrameView @JvmOverloads constructor(context: Context?, attrs: AttributeSet
         val typedArray = context?.theme?.obtainStyledAttributes(attrs, R.styleable.FrameView, defStyleAttr, defStyleRes)
 
         try {
-            val lineLengthFromTypedArray = typedArray?.getLayoutDimension(R.styleable.FrameView_line_length, dpToPx(16).toInt())
-            if (lineLengthFromTypedArray != null) {
-                lineLength = (lineLengthFromTypedArray / context.resources.displayMetrics.density).toInt()
-            }
-            val lineWidthFromTypedArray = typedArray?.getLayoutDimension(R.styleable.FrameView_line_width, dpToPx(2).toInt())
-            if (lineWidthFromTypedArray != null) {
-                lineWidth = (lineWidthFromTypedArray / context.resources.displayMetrics.density).toInt()
-            }
-            val lineColorFromTypedArray = typedArray?.getColor(R.styleable.FrameView_line_color, Color.WHITE)
-            if (lineColorFromTypedArray != null) {
-                lineColor = lineColorFromTypedArray
-            }
-            val frameSizeFromTypedArray = typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
-            if (frameSizeFromTypedArray != null) {
-                frameSize = (frameSizeFromTypedArray / context.resources.displayMetrics.density).toInt()
-            }
-            val frameAlphaFromTypedArray = typedArray?.getInt(R.styleable.FrameView_frame_alpha, 125)
-            if (frameAlphaFromTypedArray != null) {
-                frameAlpha = frameAlphaFromTypedArray
-            }
+            typedArray?.getLayoutDimension(R.styleable.FrameView_line_length, dpToPx(16).toInt())
+                    ?.let { lineLength = (it/context.resources.displayMetrics.density).toInt() }
+            typedArray?.getLayoutDimension(R.styleable.FrameView_line_width, dpToPx(2).toInt())
+                    ?.let { lineWidth = (it / context.resources.displayMetrics.density).toInt() }
+            typedArray?.getColor(R.styleable.FrameView_line_color, Color.WHITE)
+                    ?.let { lineColor = it }
+            typedArray?.getLayoutDimension(R.styleable.FrameView_frame_size, dpToPx(28).toInt())
+                    ?.let { frameSize = (it / context.resources.displayMetrics.density).toInt() }
+            typedArray?.getInt(R.styleable.FrameView_frame_alpha, 125)
+                    ?.let { frameAlpha = it }
         } finally {
             typedArray?.recycle()
         }
