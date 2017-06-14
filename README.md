@@ -3,6 +3,8 @@
 
 Custom view written in Kotlin to Display a translucent frame with corners as known from cameras. You can set the frame's alpha, the frame size, the length of the lines in the corner, their color and the width of them.
 
+<img src="./art/sample.gif" />
+
 ## Gradle
 ```Groovy
 compile 'com.sthagios:frameview:${version}'
