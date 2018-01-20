@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val frameView = findViewById(R.id.frameView) as FrameView
-        val lineLength = findViewById(R.id.lineLength) as SeekBar
+        val frameView = findViewById<FrameView>(R.id.frameView)
+        val lineLength = findViewById<SeekBar>(R.id.lineLength)
         lineLength.progress = frameView.lineLength
-        val frameSize = findViewById(R.id.frameSize) as SeekBar
+        val frameSize = findViewById<SeekBar>(R.id.frameSize)
         frameSize.progress = frameView.frameSize
-        val frameAlpha = findViewById(R.id.frameAlpha) as SeekBar
+        val frameAlpha = findViewById<SeekBar>(R.id.frameAlpha)
         frameAlpha.progress = frameView.frameAlpha
         frameAlpha.max = 255
         lineLength.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
