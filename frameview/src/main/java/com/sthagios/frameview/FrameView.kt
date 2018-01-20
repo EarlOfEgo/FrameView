@@ -83,7 +83,7 @@ class FrameView @JvmOverloads constructor(context: Context?, attrs: AttributeSet
 
         try {
             typedArray?.getLayoutDimension(R.styleable.FrameView_line_length, dpToPx(16).toInt())
-                    ?.let { lineLength = (it/context.resources.displayMetrics.density).toInt() }
+                    ?.let { lineLength = (it / context.resources.displayMetrics.density).toInt() }
             typedArray?.getLayoutDimension(R.styleable.FrameView_line_width, dpToPx(2).toInt())
                     ?.let { lineWidth = (it / context.resources.displayMetrics.density).toInt() }
             typedArray?.getColor(R.styleable.FrameView_line_color, Color.WHITE)
